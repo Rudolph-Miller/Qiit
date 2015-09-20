@@ -55,6 +55,7 @@ module.exports = React.createClass({
       <Navigator 
         initialRoute={{name: 'items'}}
         renderScene={this.renderScene}
-      />);
+      />
+    );
   }
 });
