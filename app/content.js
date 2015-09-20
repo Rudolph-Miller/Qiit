@@ -3,6 +3,7 @@
 var React = require('react-native');
 
 var {
+  StyleSheet,
   Text,
   TouchableHighlight,
   View
@@ -23,13 +24,26 @@ module.exports = React.createClass({
 
     return (
       <View>
-        <TouchableHighlight onPress={this.onBack}>
-          <Text>
-            Back
+        <TouchableHighlight 
+          onPress={this.onBack}
+          style={styles.backButton} >
+          <Text style={styles.backButtonText}>
+            Tap to back
           </Text>
         </TouchableHighlight>
         <Text>{item.body}</Text>
       </View>
     );
+  }
+});
+
+var styles = StyleSheet.create({
+  backButton: {
+    backgroundColor: '#000'
+  },
+  backButtonText: {
+    fontSize: 20,
+    color: '#fff',
+    textAlign: 'center'
   }
 });
