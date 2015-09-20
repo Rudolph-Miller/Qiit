@@ -2,10 +2,15 @@
 
 var React = require('react-native');
 
-var DATA = require('../data.json');
+var {
+  Navigator
+} = React;
 
 var Loading = require('./loading');
+var Content = require('./content');
 var Items = require('./items');
+
+var DATA = require('../data.json');
 
 module.exports = React.createClass({
   getInitialState: function() {
@@ -22,11 +27,34 @@ module.exports = React.createClass({
     });
   },
 
-  render: function() {
-    if (!this.state.loaded) {
-      return (<Loading />);
-    } else {
-      return (<Items items={this.state.items} />);
+  renderScene: function(route, navigator) {
+    switch (route.name) {
+      case 'items':
+        if (!this.state.loaded) {
+          return (<Loading />);
+        } else {
+          return (
+            <Items
+              items={this.state.items}
+              navigator={navigator}
+            />);
+        };
+        break;
+      case 'content':
+        return (
+          <Content
+            item={route.item}
+            navigator={navigator}
+          />);
+        break;
     }
+  },
+
+  render: function() {
+    return (
+      <Navigator 
+        initialRoute={{name: 'items'}}
+        renderScene={this.renderScene}
+      />);
   }
 });

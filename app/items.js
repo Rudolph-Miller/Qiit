@@ -11,11 +11,17 @@ var Item = require('./item');
 
 module.exports = React.createClass({
   propTypes: {
-    items: React.PropTypes.object.isRequierd
+    items: React.PropTypes.object.isRequierd,
+    navigator: React.PropTypes.object.isRequierd
   },
 
   renderItem: function(item) {
-    return(<Item item={item} />);
+    return(
+      <Item
+        item={item}
+        navigator={this.props.navigator}
+      />
+    );
   },
 
   dataSource: function() {
