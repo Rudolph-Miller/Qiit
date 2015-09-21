@@ -3,6 +3,7 @@
 var React = require('react-native');
 
 var {
+  BackAndroid,
   Navigator,
   ScrollView,
   Text,
@@ -17,6 +18,8 @@ var Items = require('./items');
 var Tags = require('./tags');
 
 var INITIAL_ROUTE_NAME = 'items';
+
+var _navigator;
 
 module.exports = React.createClass({
   getInitialState: function() {
@@ -80,7 +83,7 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
-    this.fetchData(INITIAL_ROUTE_NAME);
+    this.fetchData(_navigator.getCurrentRoutes()[0].name);
   },
 
   renderMain: {
@@ -126,6 +129,7 @@ module.exports = React.createClass({
   },
 
   renderScene: function(route, navigator) {
+    _navigator = navigator;
     if (this.state.error) {
       route.title = 'Error';
     } else if (!this.state.loaded) {
@@ -166,5 +170,14 @@ module.exports = React.createClass({
         renderScene={this.renderScene}
       />
     );
+  }
+});
+
+BackAndroid.addEventListener('hardwareBackPress', () => {
+  if (_navigator.getCurrentRoutes().length === 1  ) {
+    return false;
+  } else {
+    _navigator.pop();
+    return true;
   }
 });
