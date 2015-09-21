@@ -3,8 +3,7 @@
 var React = require('react-native');
 
 var {
-  ListView,
-  StyleSheet
+  ListView
 } = React;
 
 var Item = require('./item');
@@ -34,17 +33,10 @@ module.exports = React.createClass({
 
   render: function() {
       return (
-        <ListView style={styles.listView}
+        <ListView
           dataSource={this.dataSource()}
           renderRow={this.renderItem}
         />
       );
-  }
-});
-
-var styles = StyleSheet.create({
-  listView: {
-    paddingTop: 20,
-    backgroundColor: '#F5FCFF',
   }
 });

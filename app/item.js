@@ -64,7 +64,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
     paddingTop: 5,
     paddingBottom: 5
   },
@@ -78,11 +78,12 @@ var styles = StyleSheet.create({
     marginLeft: 10
   },
   title: {
-    fontSize: 20,
+    fontSize: 15,
     marginBottom: 8,
     textAlign: 'left'
   },
   userId: {
+    fontSize: 12,
     textAlign: 'left'
   },
   tagsContainer: {
@@ -95,6 +96,7 @@ var styles = StyleSheet.create({
     backgroundColor: '#eee'
   },
   tag: {
+    fontSize: 12,
     textAlign: 'center'
   },
   separator: {
