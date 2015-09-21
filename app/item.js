@@ -26,6 +26,16 @@ module.exports = React.createClass({
 
   render: function () {
     var item = this.props.item;
+    var tags = item.tags.map(function(tag) {
+      return (
+        <View style={styles.tagContainer}>
+          <Text style={styles.tag}>
+            {tag.name}
+          </Text>
+        </View>
+      );
+    });
+
     return (
       <View>
         <TouchableHighlight onPress={this.onPress}>
@@ -36,6 +46,9 @@ module.exports = React.createClass({
             <View style={styles.rightContainer}>
               <Text style={styles.title}>{item.title}</Text>
               <Text style={styles.userId}>{item.user.id}</Text>
+              <View style={styles.tagsContainer}>
+                {tags}
+              </View>
             </View>
           </View>
         </TouchableHighlight>
@@ -70,6 +83,18 @@ var styles = StyleSheet.create({
     textAlign: 'left'
   },
   userId: {
+    textAlign: 'left'
+  },
+  tagsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  tagContainer: {
+    marginRight: 5,
+    backgroundColor: '#eee'
+  },
+  tag: {
     textAlign: 'center'
   },
   separator: {
