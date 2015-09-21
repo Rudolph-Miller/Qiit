@@ -56,8 +56,8 @@ module.exports = React.createClass({
 var styles = StyleSheet.create({
   toolbar:{
     backgroundColor: '#81c04d',
-    paddingTop: 30,
-    paddingBottom: 10,
+    paddingTop: 15,
+    paddingBottom: 15,
     flexDirection: 'row'
   },
   toolbarButton:{
