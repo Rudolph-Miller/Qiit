@@ -9,8 +9,6 @@ var {
   ScrollView
 } = React;
 
-var HTMLView = require('react-native-htmlview')
-
 module.exports = React.createClass({
   propTypes: {
     item: React.PropTypes.object.isRequierd,
@@ -33,7 +31,7 @@ module.exports = React.createClass({
             Tap to back
           </Text>
         </TouchableHighlight>
-        <HTMLView value={item.rendered_body}/>
+        <Text>{item.body}</Text>
       </ScrollView>
     );
   }
