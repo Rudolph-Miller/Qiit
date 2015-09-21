@@ -3,9 +3,12 @@
 var React = require('react-native');
 
 var {
-  Navigator
+  Navigator,
+  Text,
+  ScrollView
 } = React;
 
+var Toolbar = require('./toolbar');
 var Loading = require('./loading');
 var Content = require('./content');
 var Items = require('./items');
@@ -27,27 +30,56 @@ module.exports = React.createClass({
     });
   },
 
-  renderScene: function(route, navigator) {
-    switch (route.name) {
-      case 'items':
-        if (!this.state.loaded) {
-          return (<Loading />);
-        } else {
-          return (
-            <Items
-              items={this.state.items}
-              navigator={navigator}
-            />);
-        };
-        break;
-      case 'content':
+  renderMain: {
+    items: function(route, navigator) {
+      if (!this.state.loaded) {
+        return (<Loading />);
+      } else {
         return (
+          <Items
+            items={this.state.items}
+            navigator={navigator}
+          />
+        );
+      }
+    },
+
+    content: function(route, navigator) {
+      return (
           <Content
             item={route.item}
             navigator={navigator}
-          />);
-        break;
+          />
+      );
     }
+  },
+
+  getTitle: {
+    items: function(route) {
+      if (!this.state.loaded) {
+        return 'Loading...';
+      } else {
+        return '(' + this.state.items.length + ')';
+      }
+    },
+
+    content: function(route) {
+      return route.item.title;
+    }
+  },
+
+  renderScene: function(route, navigator) {
+    route.title = this.getTitle[route.name].call(this, (route));
+    var main = this.renderMain[route.name].call(this, route, navigator);
+    return (
+      <ScrollView>
+        <Toolbar 
+          route={route}
+          navigator={navigator}
+        />
+        {main}
+      </ScrollView>
+    );
   },
 
   render: function() {
