@@ -57,6 +57,10 @@ module.exports = React.createClass({
       return 'https://qiita.com/api/v2/tags';
       },
       callback: function(json) {
+        this.setState({
+          tags: json,
+          loaded: true
+        });
       }
     }
   },
