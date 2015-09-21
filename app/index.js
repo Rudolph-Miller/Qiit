@@ -28,7 +28,6 @@ module.exports = React.createClass({
   getRequestURL: {
     items: function() {
       return 'https://qiita.com/api/v2/items';
-
     }
   },
 
