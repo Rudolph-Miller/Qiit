@@ -14,8 +14,6 @@ var Loading = require('./loading');
 var Content = require('./content');
 var Items = require('./items');
 
-var _navigator;
-
 module.exports = React.createClass({
   getInitialState: function() {
     return {
@@ -31,9 +29,8 @@ module.exports = React.createClass({
     }
   },
 
-  fetchData: function() {
-    var route = _navigator.getCurrentRoutes()[0];
-    fetch(this.getRequestURL[route.name].call(this))
+  fetchData: function(name) {
+    fetch(this.getRequestURL[name].call(this))
       .then(function(res) {
         return res.json();
       }).then(function(json) {
@@ -50,7 +47,7 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
-    this.fetchData();
+    this.fetchData('items');
   },
 
   renderMain: {
@@ -92,11 +89,15 @@ module.exports = React.createClass({
   },
 
   renderScene: function(route, navigator) {
-    _navigator = navigator;
     route.title = this.getTitle[route.name].call(this, (route));
     var main = this.renderMain[route.name].call(this, route, navigator);
     if (this.state.error) {
-      main = (<Text>{this.state.error}</Text>);
+      main = (
+        <View>
+          <Text>Error</Text>
+          <Text>{this.state.error}</Text>
+        </View>
+      );
     }
     return (
       <ScrollView>
