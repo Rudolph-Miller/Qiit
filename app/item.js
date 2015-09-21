@@ -27,17 +27,20 @@ module.exports = React.createClass({
   render: function () {
     var item = this.props.item;
     return (
-      <TouchableHighlight onPress={this.onPress}>
-        <View style={styles.container}>
-          <Image
-            source={{uri: item.user.profile_image_url}}
-            style={styles.thubnail} />
-          <View style={styles.rightContainer}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.userId}>{item.user.id}</Text>
+      <View>
+        <TouchableHighlight onPress={this.onPress}>
+          <View style={styles.container}>
+            <Image
+              source={{uri: item.user.profile_image_url}}
+              style={styles.thubnail} />
+            <View style={styles.rightContainer}>
+              <Text style={styles.title}>{item.title}</Text>
+              <Text style={styles.userId}>{item.user.id}</Text>
+            </View>
           </View>
-        </View>
-      </TouchableHighlight>
+        </TouchableHighlight>
+        <View style={styles.separator} />
+      </View>
     );
   }
 });
@@ -49,13 +52,17 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    paddingTop: 5,
+    paddingBottom: 5
   },
   thubnail: {
-    width: 53,
-    height: 81
+    width: 60,
+    height: 60,
+    marginLeft: 5
   },
   rightContainer: {
-    flex: 1
+    flex: 1,
+    marginLeft: 10
   },
   title: {
     fontSize: 20,
@@ -64,5 +71,9 @@ var styles = StyleSheet.create({
   },
   userId: {
     textAlign: 'center'
+  },
+  separator: {
+    height: 0.8,
+    backgroundColor: '#ddd'
   }
 });

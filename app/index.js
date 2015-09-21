@@ -4,11 +4,12 @@ var React = require('react-native');
 
 var {
   Navigator,
-  Text,
-  ScrollView
+  ScrollView,
+  Text
 } = React;
 
 var Toolbar = require('./toolbar');
+var Progressbar = require('./progressbar');
 var Loading = require('./loading');
 var Content = require('./content');
 var Items = require('./items');
@@ -33,7 +34,7 @@ module.exports = React.createClass({
   renderMain: {
     items: function(route, navigator) {
       if (!this.state.loaded) {
-        return (<Loading />);
+        return (<Progressbar />);
       } else {
         return (
           <Items
@@ -46,10 +47,10 @@ module.exports = React.createClass({
 
     content: function(route, navigator) {
       return (
-          <Content
-            item={route.item}
-            navigator={navigator}
-          />
+        <Content
+          item={route.item}
+          navigator={navigator}
+        />
       );
     }
   },
