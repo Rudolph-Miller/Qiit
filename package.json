@@ -6,7 +6,6 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
-    "eastasianwidth": "git@github.com:komagata/eastasianwidth",
     "react-native": "~0.11.0"
   }
 }

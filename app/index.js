@@ -58,14 +58,14 @@ module.exports = React.createClass({
   getTitle: {
     items: function(route) {
       if (!this.state.loaded) {
-        return 'Loading...';
+        return 'Qiit - Loading...';
       } else {
-        return '(' + this.state.items.length + ')';
+        return 'Qiit - List (' + this.state.items.length + ')';
       }
     },
 
     content: function(route) {
-      return route.item.title;
+      return 'Qiit - ' + route.item.title;
     }
   },
 

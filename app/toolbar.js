@@ -3,13 +3,13 @@
 var React = require('react-native');
 
 var {
+  BackAndroid,
   StyleSheet,
   Text,
+  ToolbarAndroid,
   TouchableHighlight,
   View
 } = React;
-
-var EAW = require('eastasianwidth');
 
 module.exports = React.createClass({
   PropTypes: {
@@ -17,44 +17,42 @@ module.exports = React.createClass({
     navigator: React.PropTypes.object.isRequierd
   },
 
-  renderLeftButton: {
+  getTitle: function() {
+    return this.props.route.title;
+  },
+
+  renderToolbar: {
     items: function() {
+      return (
+        <ToolbarAndroid
+          style={styles.toolbar}
+          titleColor="#ffffff"
+          title={this.getTitle()}
+        />
+      );
     },
 
     content: function() {
       return (
-        <TouchableHighlight 
-          onPress={this.onBack} >
-          <Text style={styles.toolbarButton}>
-            Back
-          </Text>
-        </TouchableHighlight>
+        <ToolbarAndroid
+          style={styles.toolbar}
+          navIcon={require("image!ic_arrow_back_white_24dp")}
+          onIconClicked={this.props.navigator.pop}
+          titleColor="#ffffff"
+          title={this.getTitle()}
+        />
       );
     }
   },
 
-  onBack: function() {
-    this.props.navigator.pop();
-  },
-
   render: function() {
-    var titleCharacters = this.props.route.title;
-    if (EAW.length(titleCharacters) > 25) {
-      titleCharacters = EAW.slice(titleCharacters, 0, 22) + '...';
-    }
-    var title = (<Text style={styles.toolbarTitle}>{titleCharacters}</Text>);
-    var leftButton = this.renderLeftButton[this.props.route.name].call(this)
-    return (
-      <View style={styles.toolbar}>
-        {leftButton}
-        {title}
-      </View>
-    );
+    return this.renderToolbar[this.props.route.name].call(this);
   }
 });
 
 var styles = StyleSheet.create({
   toolbar:{
+    height: 56,
     backgroundColor: '#81c04d',
     paddingTop: 15,
     paddingBottom: 15,
