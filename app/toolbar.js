@@ -32,6 +32,16 @@ module.exports = React.createClass({
       );
     },
 
+    tags: function() {
+      return (
+        <ToolbarAndroid
+          style={styles.toolbar}
+          titleColor="#ffffff"
+          title={this.getTitle()}
+        />
+      );
+    },
+
     content: function() {
       return (
         <ToolbarAndroid

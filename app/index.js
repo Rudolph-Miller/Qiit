@@ -5,7 +5,8 @@ var React = require('react-native');
 var {
   Navigator,
   ScrollView,
-  Text
+  Text,
+  View
 } = React;
 
 var Toolbar = require('./toolbar');
@@ -13,31 +14,63 @@ var Progressbar = require('./progressbar');
 var Loading = require('./loading');
 var Content = require('./content');
 var Items = require('./items');
+var Tags = require('./tags');
+
+var INITIAL_ROUTE_NAME = 'items';
 
 module.exports = React.createClass({
   getInitialState: function() {
     return {
       items: [],
+      tags: [],
       error: null,
       loaded: false
     };
   },
 
-  getRequestURL: {
-    items: function() {
-      return 'https://qiita.com/api/v2/items';
-    }
+  getRequestURL: function(name) {
+    return this.getRequestData[name].url.call(this);
   },
 
-  fetchData: function(name) {
-    fetch(this.getRequestURL[name].call(this))
-      .then(function(res) {
-        return res.json();
-      }).then(function(json) {
+  getRequestCallback: function(name) {
+    return this.getRequestData[name].callback;
+  },
+
+  getRequestData: {
+    items: {
+      url: function() {
+      return 'https://qiita.com/api/v2/items';
+      },
+      callback: function(json) {
         this.setState({
           items: json,
           loaded: true
         });
+      }
+    },
+
+    tags: {
+      url: function() {
+      return 'https://qiita.com/api/v2/tags';
+      },
+      callback: function(json) {
+      }
+    }
+  },
+
+  fetchData: function(name) {
+    fetch(this.getRequestURL(name))
+      .then(function(res) {
+        return res.json();
+      }).then(function(json) {
+        if (json.message) {
+          this.setState({
+            error: json.message,
+            loaded: true
+          });
+        } else {
+          this.getRequestCallback(name).call(this, json);
+        }
       }.bind(this)).catch(function(e) {
         this.setState({
           error: e,
@@ -47,21 +80,25 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
-    this.fetchData('items');
+    this.fetchData(INITIAL_ROUTE_NAME);
   },
 
   renderMain: {
     items: function(route, navigator) {
-      if (!this.state.loaded) {
-        return (<Progressbar />);
-      } else {
-        return (
-          <Items
-            items={this.state.items}
-            navigator={navigator}
-          />
-        );
-      }
+      return (
+        <Items
+          items={this.state.items}
+          navigator={navigator}
+        />
+      );
+    },
+
+    tags: function(route, navigator) {
+      return (
+        <Tags
+          tags={this.state.tags}
+        />
+      );
     },
 
     content: function(route, navigator) {
@@ -76,11 +113,11 @@ module.exports = React.createClass({
 
   getTitle: {
     items: function(route) {
-      if (!this.state.loaded) {
-        return 'Qiit - Loading...';
-      } else {
-        return 'Qiit - List (' + this.state.items.length + ')';
-      }
+      return 'Qiit - List (' + this.state.items.length + ')';
+    },
+
+    tags: function(route) {
+      return 'Qiit - Tags';
     },
 
     content: function(route) {
@@ -89,8 +126,15 @@ module.exports = React.createClass({
   },
 
   renderScene: function(route, navigator) {
-    route.title = this.getTitle[route.name].call(this, (route));
-    var main = this.renderMain[route.name].call(this, route, navigator);
+    if (this.state.error) {
+      route.title = 'Error';
+    } else if (!this.state.loaded) {
+      route.title = 'Qiit - Loading...';
+    } else {
+      route.title = this.getTitle[route.name].call(this, (route));
+    }
+
+    var main;
     if (this.state.error) {
       main = (
         <View>
@@ -98,7 +142,12 @@ module.exports = React.createClass({
           <Text>{this.state.error}</Text>
         </View>
       );
+    } else if (!this.state.loaded) {
+      main = (<Progressbar />);
+    } else {
+      main = this.renderMain[route.name].call(this, route, navigator);
     }
+
     return (
       <ScrollView>
         <Toolbar 
@@ -113,7 +162,7 @@ module.exports = React.createClass({
   render: function() {
     return (
       <Navigator 
-        initialRoute={{name: 'items'}}
+        initialRoute={{name: INITIAL_ROUTE_NAME}}
         renderScene={this.renderScene}
       />
     );
