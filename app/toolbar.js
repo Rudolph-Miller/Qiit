@@ -57,16 +57,5 @@ var styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
     flexDirection: 'row'
-  },
-  toolbarButton:{
-    width: 50,
-    color: '#fff',
-    textAlign: 'center'
-  },
-  toolbarTitle:{
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    flex: 1
   }
 });
