@@ -5,32 +5,21 @@ var React = require('react-native');
 var {
   BackAndroid,
   Navigator,
-  ScrollView,
-  Text,
-  TouchableHighlight,
-  View
+  ScrollView
 } = React;
 
 var NavigationView = require('./navigation_view');
 var ToolBar = require('./tool_bar');
 var ProgressBar = require('./progress_bar');
 var Loading = require('./loading');
-var Content = require('./content');
-var Items = require('./items');
-var Tags = require('./tags');
+var ErrorComponent = require('./error');
+
+var REQUEST = require('./request');
+
+var MAP = require('./map');
 
 var INITIAL_ROUTE_NAME = 'items';
-
 var BACKABLE_ROUTE_NAMES = ['content'];
-
-var DEBUG = true;
-
-var ITEMS = require('../data/items.json');
-var TAGS = require('../data/tags.json');
-var DATA = {
-  items: ITEMS,
-  tags: TAGS
-};
 
 var _navigator;
 
@@ -44,113 +33,14 @@ module.exports = React.createClass({
     };
   },
 
-  getRequestURL: function(name) {
-    return this.getRequestData[name].url.call(this);
-  },
-
-  getRequestCallback: function(name) {
-    return this.getRequestData[name].callback;
-  },
-
-  getRequestData: {
-    items: {
-      url: function() {
-        return 'https://qiita.com/api/v2/items';
-      },
-      callback: function(json) {
-        this.setState({
-          items: json,
-          loaded: true
-        });
-      }
-    },
-
-    tags: {
-      url: function() {
-        return 'https://qiita.com/api/v2/tags';
-      },
-      callback: function(json) {
-        this.setState({
-          tags: json,
-          loaded: true
-        });
-      }
-    }
-  },
-
   fetchData: function() {
     var routes = _navigator.getCurrentRoutes();
     var name = routes[routes.length-1].name;
-    if ( DEBUG ) {
-      var json = DATA[name];
-      this.getRequestCallback(name).call(this, json);
-    } else {
-      fetch(this.getRequestURL(name))
-        .then(function(res) {
-          return res.json();
-        }).then(function(json) {
-          if (json.message) {
-            this.setState({
-              error: json.message,
-              loaded: true
-            });
-          } else {
-            this.getRequestCallback(name).call(this, json);
-          }
-        }.bind(this)).catch(function(e) {
-          this.setState({
-            error: e,
-            loaded: true
-          });
-        }.bind(this));
-    }
+    REQUEST.call(this, name);
   },
 
   componentDidMount: function() {
     this.fetchData();
-  },
-
-  renderMain: {
-    items: function(route, navigator) {
-      return (
-        <Items
-          route={route}
-          navigator={navigator}
-        />
-      );
-    },
-
-    tags: function(route, navigator) {
-      return (
-        <Tags
-          route={route}
-          navigator={navigator}
-        />
-      );
-    },
-
-    content: function(route, navigator) {
-      return (
-        <Content
-          route={route}
-          navigator={navigator}
-        />
-      );
-    }
-  },
-
-  getTitle: {
-    items: function(route) {
-      return 'Qiit - List (' + this.state.items.length + ')';
-    },
-
-    tags: function(route) {
-      return 'Qiit - Tags';
-    },
-
-    content: function(route) {
-      return 'Qiit - ' + route.item.title;
-    }
   },
 
   renderScene: function(route, navigator) {
@@ -161,21 +51,16 @@ module.exports = React.createClass({
     } else if (!this.state.loaded) {
       route.title = 'Qiit - Loading...';
     } else {
-      route.title = this.getTitle[route.name].call(this, (route));
+      route.title = MAP[route.name].title.call(this, (route));
     }
 
     var main;
     if (this.state.error) {
-      main = (
-        <View>
-          <Text>Error</Text>
-          <Text>{this.state.error}</Text>
-        </View>
-      );
+      main = (<ErrorComponent error={this.state.error} />);
     } else if (!this.state.loaded) {
       main = (<ProgressBar />);
     } else {
-      main = this.renderMain[route.name].call(this, route, navigator);
+      main = React.createElement(MAP[route.name].component, {route: route, navigator: navigator});
     }
 
     return (
