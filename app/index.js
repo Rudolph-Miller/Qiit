@@ -12,8 +12,8 @@ var {
   View
 } = React;
 
-var Toolbar = require('./toolbar');
-var Progressbar = require('./progressbar');
+var ToolBar = require('./tool_bar');
+var ProgressBar = require('./progress_bar');
 var Loading = require('./loading');
 var Content = require('./content');
 var Items = require('./items');
@@ -197,7 +197,7 @@ module.exports = React.createClass({
         </View>
       );
     } else if (!this.state.loaded) {
-      main = (<Progressbar />);
+      main = (<ProgressBar />);
     } else {
       main = this.renderMain[route.name].call(this, route, navigator);
     }
@@ -208,7 +208,7 @@ module.exports = React.createClass({
         drawerPosition={DrawerLayoutAndroid.positions.Left}
         renderNavigationView={this.renderNavigationView}>
       <ScrollView>
-        <Toolbar 
+        <ToolBar 
           route={route}
           navigator={navigator}
         />
