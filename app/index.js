@@ -4,9 +4,11 @@ var React = require('react-native');
 
 var {
   BackAndroid,
+  DrawerLayoutAndroid,
   Navigator,
   ScrollView,
   Text,
+  TouchableHighlight,
   View
 } = React;
 
@@ -18,6 +20,8 @@ var Items = require('./items');
 var Tags = require('./tags');
 
 var INITIAL_ROUTE_NAME = 'items';
+
+var BACKABLE_ROUTE_NAMES = ['content'];
 
 var _navigator;
 
@@ -66,7 +70,8 @@ module.exports = React.createClass({
   },
 
   fetchData: function() {
-    var name = _navigator.getCurrentRoutes()[0].name;
+    var routes = _navigator.getCurrentRoutes();
+    var name = routes[routes.length-1].name;
     fetch(this.getRequestURL(name))
       .then(function(res) {
         return res.json();
@@ -133,6 +138,30 @@ module.exports = React.createClass({
     }
   },
 
+  renderNavigationView: function() {
+    return (
+      <View>
+        <TouchableHighlight
+          onPress={this.handlePressNavigationView}
+          name='items'>
+          <Text>
+            Items
+          </Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          onPress={this.handlePressNavigationView}
+          name='tags'>
+          <Text>
+            Tags
+          </Text>
+        </TouchableHighlight>
+      </View>
+    );
+  },
+
+  handlePressNavigationView: function(e) {
+  },
+
   renderScene: function(route, navigator) {
     _navigator = navigator;
     if (this.state.error) {
@@ -158,6 +187,10 @@ module.exports = React.createClass({
     }
 
     return (
+      <DrawerLayoutAndroid
+        drawerWidth={200}
+        drawerPosition={DrawerLayoutAndroid.positions.Left}
+        renderNavigationView={this.renderNavigationView}>
       <ScrollView>
         <Toolbar 
           route={route}
@@ -165,6 +198,7 @@ module.exports = React.createClass({
         />
         {main}
       </ScrollView>
+    </DrawerLayoutAndroid>
     );
   },
 
@@ -179,10 +213,16 @@ module.exports = React.createClass({
 });
 
 BackAndroid.addEventListener('hardwareBackPress', () => {
-  if (_navigator.getCurrentRoutes().length === 1  ) {
+  if (_navigator.getCurrentRoutes().length <= 1  ) {
     return false;
   } else {
-    _navigator.pop();
-    return true;
+    var routes = _navigator.getCurrentRoutes();
+    var currentRouteName = routes[routes.length-1].name;
+    if (BACKABLE_ROUTE_NAMES.indexOf(currentRouteName) >= 0) {
+      _navigator.pop();
+      return true;
+    } else {
+      return false;
+    }
   }
 });
