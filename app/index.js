@@ -4,7 +4,6 @@ var React = require('react-native');
 
 var {
   BackAndroid,
-  DrawerLayoutAndroid,
   Navigator,
   ScrollView,
   Text,
@@ -12,6 +11,7 @@ var {
   View
 } = React;
 
+var NavigationView = require('./navigation_view');
 var ToolBar = require('./tool_bar');
 var ProgressBar = require('./progress_bar');
 var Loading = require('./loading');
@@ -153,30 +153,6 @@ module.exports = React.createClass({
     }
   },
 
-  renderNavigationView: function() {
-    return (
-      <View>
-        <TouchableHighlight
-          onPress={this.handlePressNavigationView}
-          name='items'>
-          <Text>
-            Items
-          </Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          onPress={this.handlePressNavigationView}
-          name='tags'>
-          <Text>
-            Tags
-          </Text>
-        </TouchableHighlight>
-      </View>
-    );
-  },
-
-  handlePressNavigationView: function(e) {
-  },
-
   renderScene: function(route, navigator) {
     _navigator = navigator;
     route.state = this.state;
@@ -203,18 +179,15 @@ module.exports = React.createClass({
     }
 
     return (
-      <DrawerLayoutAndroid
-        drawerWidth={200}
-        drawerPosition={DrawerLayoutAndroid.positions.Left}
-        renderNavigationView={this.renderNavigationView}>
-      <ScrollView>
-        <ToolBar 
-          route={route}
-          navigator={navigator}
-        />
-        {main}
-      </ScrollView>
-    </DrawerLayoutAndroid>
+      <NavigationView>
+        <ScrollView>
+          <ToolBar 
+            route={route}
+            navigator={navigator}
+          />
+          {main}
+        </ScrollView>
+      </NavigationView>
     );
   },
 
