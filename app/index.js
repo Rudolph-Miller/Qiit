@@ -110,6 +110,7 @@ module.exports = React.createClass({
       return (
         <Tags
           tags={this.state.tags}
+          navigator={navigator}
         />
       );
     },
