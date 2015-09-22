@@ -10,7 +10,7 @@ var Item = require('./item');
 
 module.exports = React.createClass({
   propTypes: {
-    items: React.PropTypes.object.isRequierd,
+    route: React.PropTypes.object.isRequierd,
     navigator: React.PropTypes.object.isRequierd
   },
 
@@ -27,7 +27,7 @@ module.exports = React.createClass({
     return (
       new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
-      }).cloneWithRows(this.props.items)
+      }).cloneWithRows(this.props.route.state.items)
     );
   },
 

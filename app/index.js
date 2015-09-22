@@ -23,6 +23,15 @@ var INITIAL_ROUTE_NAME = 'items';
 
 var BACKABLE_ROUTE_NAMES = ['content'];
 
+var DEBUG = true;
+
+var ITEMS = require('../data/items.json');
+var TAGS = require('../data/tags.json');
+var DATA = {
+  items: ITEMS,
+  tags: TAGS
+};
+
 var _navigator;
 
 module.exports = React.createClass({
@@ -46,7 +55,7 @@ module.exports = React.createClass({
   getRequestData: {
     items: {
       url: function() {
-      return 'https://qiita.com/api/v2/items';
+        return 'https://qiita.com/api/v2/items';
       },
       callback: function(json) {
         this.setState({
@@ -58,7 +67,7 @@ module.exports = React.createClass({
 
     tags: {
       url: function() {
-      return 'https://qiita.com/api/v2/tags';
+        return 'https://qiita.com/api/v2/tags';
       },
       callback: function(json) {
         this.setState({
@@ -72,24 +81,29 @@ module.exports = React.createClass({
   fetchData: function() {
     var routes = _navigator.getCurrentRoutes();
     var name = routes[routes.length-1].name;
-    fetch(this.getRequestURL(name))
-      .then(function(res) {
-        return res.json();
-      }).then(function(json) {
-        if (json.message) {
+    if ( DEBUG ) {
+      var json = DATA[name];
+      this.getRequestCallback(name).call(this, json);
+    } else {
+      fetch(this.getRequestURL(name))
+        .then(function(res) {
+          return res.json();
+        }).then(function(json) {
+          if (json.message) {
+            this.setState({
+              error: json.message,
+              loaded: true
+            });
+          } else {
+            this.getRequestCallback(name).call(this, json);
+          }
+        }.bind(this)).catch(function(e) {
           this.setState({
-            error: json.message,
+            error: e,
             loaded: true
           });
-        } else {
-          this.getRequestCallback(name).call(this, json);
-        }
-      }.bind(this)).catch(function(e) {
-        this.setState({
-          error: e,
-          loaded: true
-        });
-      }.bind(this));
+        }.bind(this));
+    }
   },
 
   componentDidMount: function() {
@@ -100,7 +114,7 @@ module.exports = React.createClass({
     items: function(route, navigator) {
       return (
         <Items
-          items={this.state.items}
+          route={route}
           navigator={navigator}
         />
       );
@@ -109,7 +123,7 @@ module.exports = React.createClass({
     tags: function(route, navigator) {
       return (
         <Tags
-          tags={this.state.tags}
+          route={route}
           navigator={navigator}
         />
       );
@@ -118,7 +132,7 @@ module.exports = React.createClass({
     content: function(route, navigator) {
       return (
         <Content
-          item={route.item}
+          route={route}
           navigator={navigator}
         />
       );
@@ -165,6 +179,7 @@ module.exports = React.createClass({
 
   renderScene: function(route, navigator) {
     _navigator = navigator;
+    route.state = this.state;
     if (this.state.error) {
       route.title = 'Error';
     } else if (!this.state.loaded) {

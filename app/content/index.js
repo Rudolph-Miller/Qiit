@@ -9,11 +9,11 @@ var {
 
 module.exports = React.createClass({
   propTypes: {
-    item: React.PropTypes.object.isRequierd
+    route: React.PropTypes.object.isRequierd
   },
 
   render: function() {
-    var item = this.props.item;
+    var item = this.props.route.item;
 
     return (
       <ScrollView>

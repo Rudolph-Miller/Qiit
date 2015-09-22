@@ -4,7 +4,7 @@ var React = require('react-native');
 
 module.exports = React.createClass({
   propTypes: {
-    tags: React.PropTypes.array.isRequired,
+    route: React.PropTypes.object.isRequired,
     navigator: React.PropTypes.object.isRequierd
   },
 
@@ -22,7 +22,7 @@ module.exports = React.createClass({
     return (
       new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
-      }).cloneWithRows(this.props.tags)
+      }).cloneWithRows(this.props.route.state.tags)
     );
   },
 
