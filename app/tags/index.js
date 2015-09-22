@@ -2,6 +2,13 @@
 
 var React = require('react-native');
 
+var {
+  ListView,
+  StyleSheet,
+  Text,
+  View
+} = React;
+
 module.exports = React.createClass({
   propTypes: {
     route: React.PropTypes.object.isRequired,
@@ -10,9 +17,9 @@ module.exports = React.createClass({
 
   renderTag: function(tag) {
     return(
-      <View>
-        <Text>
-          tag.name
+      <View style={styles.tagContainer}>
+        <Text style={styles.tag}>
+          {tag.id}
         </Text>
       </View>
     );
@@ -33,5 +40,18 @@ module.exports = React.createClass({
         renderRow={this.renderTag}
       />
     );
+  }
+});
+
+var styles = StyleSheet.create({
+  tagContainer: {
+    backgroundColor: '#eee',
+    marginBottom: 10,
+    marginLeft: 10,
+    padding: 5,
+    width: 300
+  },
+  tag: {
+    fontSize: 15
   }
 });
