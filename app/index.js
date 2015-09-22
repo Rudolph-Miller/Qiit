@@ -66,7 +66,7 @@ module.exports = React.createClass({
   },
 
   fetchData: function() {
-    name = _navigator.getCurrentRoutes()[0].name;
+    var name = _navigator.getCurrentRoutes()[0].name;
     fetch(this.getRequestURL(name))
       .then(function(res) {
         return res.json();
