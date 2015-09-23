@@ -8,7 +8,7 @@ var {
   ScrollView
 } = React;
 
-var NavigationView = require('./navigation_view');
+var Drawer = require('./drawer');
 var ToolBar = require('./tool_bar');
 var ProgressBar = require('./progress_bar');
 var Loading = require('./loading');
@@ -64,7 +64,7 @@ module.exports = React.createClass({
     }
 
     return (
-      <NavigationView>
+      <Drawer>
         <ScrollView>
           <ToolBar 
             route={route}
@@ -72,7 +72,7 @@ module.exports = React.createClass({
           />
           {main}
         </ScrollView>
-      </NavigationView>
+      </Drawer>
     );
   },
 
