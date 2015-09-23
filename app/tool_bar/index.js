@@ -13,8 +13,8 @@ var {
 
 module.exports = React.createClass({
   PropTypes: {
-    route: React.PropTypes.object.isRequierd,
-    navigator: React.PropTypes.object.isRequierd
+    route: React.PropTypes.object.isRequired,
+    navigator: React.PropTypes.object.isRequired
   },
 
   getTitle: function() {

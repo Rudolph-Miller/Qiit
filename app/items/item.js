@@ -13,8 +13,8 @@ var {
 
 module.exports = React.createClass({
   propTypes: {
-    item: React.PropTypes.object.isRequierd,
-    navigator: React.PropTypes.object.isRequierd
+    item: React.PropTypes.object.isRequired,
+    navigator: React.PropTypes.object.isRequired
   },
 
   onPress: function() {

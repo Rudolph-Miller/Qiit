@@ -9,7 +9,7 @@ var {
 
 module.exports = React.createClass({
   propTypes: {
-    route: React.PropTypes.object.isRequierd
+    route: React.PropTypes.object.isRequired
   },
 
   render: function() {

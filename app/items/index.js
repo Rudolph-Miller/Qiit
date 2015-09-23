@@ -10,8 +10,8 @@ var Item = require('./item');
 
 module.exports = React.createClass({
   propTypes: {
-    route: React.PropTypes.object.isRequierd,
-    navigator: React.PropTypes.object.isRequierd
+    route: React.PropTypes.object.isRequired,
+    navigator: React.PropTypes.object.isRequired
   },
 
   renderItem: function(item) {
