@@ -14,7 +14,8 @@ var {
 module.exports = React.createClass({
   PropTypes: {
     route: React.PropTypes.object.isRequired,
-    navigator: React.PropTypes.object.isRequired
+    navigator: React.PropTypes.object.isRequired,
+    toggleDrawer: React.PropTypes.func.isRequired
   },
 
   getTitle: function() {
@@ -26,6 +27,8 @@ module.exports = React.createClass({
       return (
         <ToolbarAndroid
           style={styles.toolbar}
+          navIcon={require("image!ic_drawer")}
+          onIconClicked={this.props.toggleDrawer}
           titleColor="#ffffff"
           title={this.getTitle()}
         />
@@ -36,6 +39,8 @@ module.exports = React.createClass({
       return (
         <ToolbarAndroid
           style={styles.toolbar}
+          navIcon={require("image!ic_drawer")}
+          onIconClicked={this.props.toggleDrawer}
           titleColor="#ffffff"
           title={this.getTitle()}
         />

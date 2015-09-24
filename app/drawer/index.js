@@ -10,6 +10,10 @@ var {
 } = React;
 
 module.exports = React.createClass({
+  componentDidMount: function() {
+    this.isOpen = false;
+  },
+
   renderNavigationView: function() {
     return (
       <View>
@@ -32,14 +36,42 @@ module.exports = React.createClass({
   },
 
   handlePressNavigationView: function(e) {
+    this.closeDrawer();
+  },
+
+  onDrawerOpen: function() {
+    this.isOpen = true;
+  },
+
+  onDrawerClose: function() {
+    this.isOpen = false;
+  },
+
+  openDrawer: function() {
+    this.drawer.openDrawer();
+  },
+
+  closeDrawer: function() {
+    this.drawer.closeDrawer();
+  },
+
+  toggleDrawer: function() {
+    if ( this.isOpen ) {
+      this.closeDrawer();
+    } else {
+      this.openDrawer();
+    }
   },
 
   render: function() {
     return (
       <DrawerLayoutAndroid
+        ref={function(drawer) { this.drawer = drawer }.bind(this)}
         drawerWidth={200}
         drawerPosition={DrawerLayoutAndroid.positions.Left}
-        renderNavigationView={this.renderNavigationView}>
+        renderNavigationView={this.renderNavigationView}
+        onDrawerOpen={this.onDrawerOpen}
+        onDrawerClose={this.onDrawerClose} >
         {this.props.children}
       </DrawerLayoutAndroid>
     );

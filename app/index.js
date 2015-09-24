@@ -43,6 +43,10 @@ module.exports = React.createClass({
     this.fetchData();
   },
 
+  toggleDrawer: function() {
+    this.drawer.toggleDrawer();
+  },
+
   renderScene: function(route, navigator) {
     _navigator = navigator;
     route.state = this.state;
@@ -64,11 +68,12 @@ module.exports = React.createClass({
     }
 
     return (
-      <Drawer>
+      <Drawer ref={function(drawer) { this.drawer = drawer; }.bind(this)}>
         <ScrollView>
           <ToolBar 
             route={route}
             navigator={navigator}
+            toggleDrawer={this.toggleDrawer}
           />
           {main}
         </ScrollView>
